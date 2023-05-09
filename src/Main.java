@@ -5,16 +5,17 @@ import java.util.Arrays;
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     static String[] reserved = new String[]{"print", "str", "strend"};
-    static String codeString = "print str Hello World strend ; ";
+    static String codeString = "print str Hello World strend str Hello Lythre strend ; string name str leadattic strend;";
     static String[] code;
     static int stringNum = 0;
     static ArrayList<String> strings = new ArrayList<String>();
     public static void main(String[] args) {
         code = codeString.split(" ");
-        code = deleteBetweenValues(code, "str", "strend");
+
+        while(Arrays.stream(code).anyMatch("strend"::equals))
+            code = deleteBetweenValues(code, "str", "strend", true);
 
         System.out.println(Arrays.toString(code));
-        System.out.println(strings.get(0));
 
 
 
@@ -26,7 +27,7 @@ public class Main {
         }
 
     }
-    public static String[] deleteBetweenValues(String[] arr, String val1, String val2) {
+    public static String[] deleteBetweenValues(String[] arr, String val1, String val2, boolean createString) {
         int start = -1, end = -1;
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < arr.length; i++) {
@@ -42,7 +43,8 @@ public class Main {
                 }
             }
         }
-        if (sb.length() > 0) {
+
+        if (sb.length() > 0 && createString) {
             strings.add(sb.toString());
         }
         if (start != -1 && end != -1) {
@@ -68,12 +70,69 @@ public class Main {
             return;
         else if(str.equals("print"))
             print(i);
+        else if(str.equals("string"))
+            print(i);
+        else if(str.equals("int"))
+            print(i);
+        else if(str.equals("bool"))
+            print(i);
+        else if(str.equals("promptWithMessage"))
+            print(i);
     }
 
+    public static void string(int i) {
+        //string varname content
+        int semiColon = getNext(i, ";", code);
+        String toPrint = "";
+        for (int j = i+1; j<semiColon; j++){
+            toPrint += code[j];
+        }
+        int count = 0;
+        int index = toPrint.indexOf("str");
+
+        while (index != -1){
+            count++;
+            index = toPrint.indexOf("str", index + 1);
+
+
+        }
+        System.out.println(count + stringNum);
+
+        for(int j = 0; j < count; j++){
+            System.out.println(j);
+            toPrint = toPrint.replaceFirst("str", strings.get(stringNum));
+            stringNum++;
+        }
+        System.out.println(toPrint);
+    }
     public static void print(int i){
 
-        String[] outer = deleteBetweenValues(code, "print", ";");
+
+        int semiColon = getNext(i, ";", code);
         String toPrint = "";
+        for (int j = i+1; j<semiColon; j++){
+            toPrint += code[j];
+        }
+        int count = 0;
+        int index = toPrint.indexOf("str");
+
+        while (index != -1){
+            count++;
+            index = toPrint.indexOf("str", index + 1);
+
+
+        }
+        System.out.println(count + stringNum);
+
+        for(int j = 0; j < count; j++){
+            System.out.println(j);
+            toPrint = toPrint.replaceFirst("str", strings.get(stringNum));
+            stringNum++;
+        }
+        System.out.println(toPrint);
+
+
+
 
         //System.out.println(Arrays.toString(inner));
 
