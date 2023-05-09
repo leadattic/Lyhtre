@@ -42,6 +42,9 @@ public class Main {
                 }
             }
         }
+        if (sb.length() > 0) {
+            strings.add(sb.toString());
+        }
         if (start != -1 && end != -1) {
             String[] result = new String[arr.length - (end - start) - 1];
             int index = 0;
@@ -51,10 +54,12 @@ public class Main {
                 }
             }
             return result;
+        }else{
+            System.out.println("ERROR in deleteBetweenValues");
+            return new String[]{"ERROR in deleteBetweenValues"};
         }
-        if (sb.length() > 0) {
-            strings.add(sb.toString());
-        }code =
+
+
     }
 
 
@@ -66,9 +71,22 @@ public class Main {
     }
 
     public static void print(int i){
-        String[] inner = deleteBetweenValues(code, "print", ";");
+
+        String[] outer = deleteBetweenValues(code, "print", ";");
+        String toPrint = "";
+
+        //System.out.println(Arrays.toString(inner));
+
+    }
 
 
-
+    public static int getNext(int start, String end, String[] array){
+        for (int i = 0; i<array.length;i++){
+            if(array[i].equals(";") && i >= start){
+                return i;
+            }
+        }
+        System.out.println("ERROR: missing semicolon from operator "+start);
+        return -1;
     }
 }
